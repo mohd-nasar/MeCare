@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "273170606847",
+    "project_id": "mecare-1c525",
+    "storage_bucket": "mecare-1c525.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:273170606847:android:3cadd1340d72e71839baca",
+        "android_client_info": {
+          "package_name": "com.example.doc_sight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "273170606847-hkeqc4vp7niek4kha6g3ihbfmm8dlebd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.doc_sight",
+            "certificate_hash": "682fefc1a0f3a3d5faafff530cfec99a81114d5a"
+          }
+        },
+        {
+          "client_id": "273170606847-5knu2d8cm3ibtib678cu6qdf632a5rv3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCb9tSeuQGvYX-uJh9obVdxrhifusVlOPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "273170606847-5knu2d8cm3ibtib678cu6qdf632a5rv3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
