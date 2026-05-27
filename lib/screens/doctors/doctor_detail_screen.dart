@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/doctor.dart';
 import '../../data/dummy_data.dart';
+import '../chat/chat_screen.dart';
 
 class DoctorDetailScreen extends StatelessWidget {
   final Doctor doctor;
@@ -13,101 +14,180 @@ class DoctorDetailScreen extends StatelessWidget {
         .where((clinic) => doctor.clinicIds.contains(clinic.id))
         .toList();
 
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    const primaryGreen = Color(0xFF0F766E);
+
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text(doctor.name),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.chat_bubble_outline),
-            onPressed: () {
-              // Navigate to Chat
-            },
-          ),
-        ],
+        title: const Text("Doctor Details", style: TextStyle(fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        foregroundColor: isDark ? Colors.white : Colors.black,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 20),
+            // --- Profile Header ---
             Center(
-              child: Hero(
-                tag: doctor.id,
-                child: CircleAvatar(
-                  radius: 70,
-                  backgroundImage: NetworkImage(doctor.photoUrl),
-                ),
+              child: Column(
+                children: [
+                  Hero(
+                    tag: doctor.id,
+                    child: Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(color: primaryGreen, width: 4),
+                        image: DecorationImage(
+                          image: NetworkImage(doctor.photoUrl),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    doctor.name,
+                    style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    doctor.specialization,
+                    style: const TextStyle(fontSize: 16, color: primaryGreen, fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    doctor.education,
+                    style: TextStyle(fontSize: 14, color: isDark ? Colors.grey[400] : Colors.grey[700]),
+                  ),
+                ],
               ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              doctor.name,
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+            const SizedBox(height: 30),
+
+            // --- Stats Row ---
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildStatItem("Experience", doctor.experience, Icons.history_edu_rounded),
+                  _buildStatItem("Rating", "4.9", Icons.star_rounded),
+                  _buildStatItem("Patients", "500+", Icons.people_rounded),
+                ],
+              ),
             ),
-            Text(
-              doctor.specialization,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: Theme.of(context).colorScheme.primary),
-            ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 30),
+
+            // --- Info Sections ---
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildInfoSection(context, 'Experience', doctor.experience, Icons.history_edu),
-                  _buildInfoSection(context, 'Education', doctor.education, Icons.school_outlined),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Associated Clinics',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  _buildSectionHeader("Biography"),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Dr. Najamuddin is a psychiatrist qualified by the Royal College of Psychiatrists in London, U.K., with over twenty years of experience. He has been working with the Ministry of Health in Brunei Darussalam since 2009.",
+                    style: TextStyle(color: isDark ? Colors.grey[400] : Colors.grey[700], height: 1.6),
                   ),
-                  const SizedBox(height: 8),
-                  ...clinics.map((clinic) => ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        leading: const Icon(Icons.location_on_outlined),
-                        title: Text(clinic.name),
-                        subtitle: Text(clinic.address),
-                      )),
+                  const SizedBox(height: 25),
+
+                  _buildSectionHeader("Education"),
+                  const SizedBox(height: 10),
+                  _buildBulletPoint(doctor.education),
+                  _buildBulletPoint("Member of Royal College of Psychiatrists, London"),
+                  const SizedBox(height: 25),
+
+                  _buildSectionHeader("Clinics"),
+                  const SizedBox(height: 10),
+                  ...clinics.map((clinic) => Card(
+                    elevation: 0,
+                    color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                    child: ListTile(
+                      leading: const Icon(Icons.location_on, color: primaryGreen),
+                      title: Text(clinic.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text(clinic.address, style: const TextStyle(fontSize: 12)),
+                    ),
+                  )),
                 ],
+              ),
+            ),
+            const SizedBox(height: 100), // Bottom padding
+          ],
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Theme.of(context).cardColor,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
+          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ChatScreen())),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  side: const BorderSide(color: primaryGreen),
+                ),
+                child: const Text("Chat", style: TextStyle(color: primaryGreen, fontWeight: FontWeight.bold)),
+              ),
+            ),
+            const SizedBox(width: 15),
+            Expanded(
+              flex: 2,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryGreen,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  elevation: 0,
+                ),
+                child: const Text("Book Appointment", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: FilledButton(
-          onPressed: () {
-            // Book appointment logic
-          },
-          style: FilledButton.styleFrom(
-            minimumSize: const Size(double.infinity, 50),
-          ),
-          child: const Text('Book an Appointment'),
-        ),
-      ),
     );
   }
 
-  Widget _buildInfoSection(BuildContext context, String title, String value, IconData icon) {
+  Widget _buildStatItem(String label, String value, IconData icon) {
+    return Column(
+      children: [
+        Icon(icon, color: const Color(0xFF0F766E), size: 28),
+        const SizedBox(height: 8),
+        Text(value, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+        Text(label, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+      ],
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Text(
+      title,
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget _buildBulletPoint(String text) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.only(bottom: 8),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: Colors.grey[600]),
-          const SizedBox(width: 16),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-              Text(
-                value,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-            ],
-          ),
+          const Text("• ", style: TextStyle(color: Color(0xFF0F766E), fontSize: 18, fontWeight: FontWeight.bold)),
+          Expanded(child: Text(text, style: const TextStyle(fontSize: 14))),
         ],
       ),
     );
