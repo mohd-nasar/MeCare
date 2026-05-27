@@ -6,7 +6,14 @@ class MentalHealthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Mental Health Resources')),
+      appBar: AppBar(
+          backgroundColor:
+          const Color(
+            0xFF38104D,
+          ),
+
+          title: const Text('Mental Health Resources')
+      ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(

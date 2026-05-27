@@ -23,7 +23,10 @@ class DoctorDetailScreen extends StatelessWidget {
         title: const Text("Doctor Details", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor:
+        const Color(
+          0xFF38104D,
+        ),
         foregroundColor: isDark ? Colors.white : Colors.black,
       ),
       body: SingleChildScrollView(

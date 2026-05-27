@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../services/auth_service.dart';
 import '../auth/login_screen.dart';
 import '../home/home_screen.dart';
+import 'package:animate_do/animate_do.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,15 +20,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _checkStatus() async {
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 3));
     if (!mounted) return;
 
     final auth = Provider.of<AuthService>(context, listen: false);
-    debugPrint(
-      "AUTH: Current user: "
-          "${auth.user?.email}",
-    );
-    if (auth.user != null ) {
+    
+    if (auth.user != null) {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
     } else {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
@@ -36,15 +34,19 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.teal,
+    return Scaffold(
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.health_and_safety, size: 100, color: Colors.white),
-            SizedBox(height: 20),
-            Text('MeCare', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.bold)),
+            FadeInDown(
+              child: Image.asset('assets/images/logo.jpg', width: 220),
+            ),
+            const SizedBox(height: 30),
+            FadeInUp(
+              child: const CircularProgressIndicator(color: Color(0xFF38104D)),
+            ),
           ],
         ),
       ),

@@ -68,10 +68,33 @@ class AboutScreen extends StatelessWidget {
       drawer: const AppDrawer(),
 
       appBar: AppBar(
+        backgroundColor:
+        const Color(
+          0xFF38104D,
+        ),
+
+        elevation: 0,
+
+        centerTitle: true,
+
+        iconTheme:
+        const IconThemeData(
+          color: Colors.white,
+        ),
+
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         title: const Text(
           'Our Services',
         ),
-        centerTitle: true,
       ),
 
       body: ListView.builder(

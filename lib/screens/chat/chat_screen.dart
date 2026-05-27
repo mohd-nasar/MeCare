@@ -128,12 +128,15 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    const primaryTeal = Color(0xFF0F766E);
+    const primaryTeal = Color(0xFF38104D);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final doctor = dummyDoctors.first;
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(
+          color: Colors.white,
+        ),
         title: Row(
           children: [
             CircleAvatar(
@@ -144,8 +147,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(doctor.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                const Text("Online", style: TextStyle(fontSize: 12, color: Colors.greenAccent)),
+                Text(doctor.name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
               ],
             ),
           ],
@@ -156,7 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
       body: Container(
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF0B141A) : const Color(0xFFE5DDD5),
+          color: isDark ? const Color(0xFF0B0329) : const Color(0xFFDED6ED),
         ),
         child: Column(
           children: [
@@ -326,7 +328,7 @@ class _ChatScreenState extends State<ChatScreen> {
         constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.75),
         decoration: BoxDecoration(
           color: isMe 
-            ? (isDark ? const Color(0xFF005C4B) : const Color(0xFFDCF8C6))
+            ? (isDark ? const Color(0xFF0A1E55) : const Color(0xFFBEBBD6))
             : (isDark ? const Color(0xFF1F2C34) : Colors.white),
           borderRadius: BorderRadius.only(
             topLeft: const Radius.circular(14),
